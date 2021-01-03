@@ -1,0 +1,25 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "airbnb"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "rules": {
+        "semi":"error",
+        "quotes": [2, "single"],
+        "prefer-const":"warn",
+        "no-unused-vars":"warn",
+        "@typescript-eslint/no-inferrable-types":"warn",
+        "linebreak-style":"off",
+        "indent":"off",
+        "eol-last":"off",
+        "no-restricted-globals":"warn",
+        "no-template-curly-in-string":"off",
+        "no-console":"off",
+        "no-shadow":"off",
+        "no-use-before-define":"warn",
+        "no-multi-spaces":"off"
+    }
+}
