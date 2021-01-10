@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model classroom {
+  classroomID                             Int      @id @default(autoincrement())
+  location                                String?
+  isOccupied                              Int?
+  whenIsOccupied                          Int?
+  occupiedBy                              Int?
+  lesson_classroom_occupiedByTolesson     lesson?  @relation("classroom_occupiedByTolesson", fields: [occupiedBy], references: [lessonID])
+  lesson_classroom_whenIsOccupiedTolesson lesson?  @relation("classroom_whenIsOccupiedTolesson", fields: [whenIsOccupied], references: [lessonID])
+  lesson_classroomTolesson_location       lesson[] @relation("classroomTolesson_location")
+
+  @@index([occupiedBy], name: "occupiedBy_idx")
+  @@index([whenIsOccupied], name: "when_idx")
+}
+
+model lesson {
+  lessonID                                   Int         @id @default(autoincrement())
+  subject                                    Int?
+  teacher                                    Int?
+  when                                       String?
+  location                                   Int?
+  url                                        String?
+  group                                      Int?
+  classroom_classroomTolesson_location       classroom?  @relation("classroomTolesson_location", fields: [location], references: [classroomID])
+  teachers                                   teachers?   @relation(fields: [teacher], references: [teacherID])
+  classroom_classroom_occupiedByTolesson     classroom[] @relation("classroom_occupiedByTolesson")
+  classroom_classroom_whenIsOccupiedTolesson classroom[] @relation("classroom_whenIsOccupiedTolesson")
+
+  @@index([location], name: "location_idx")
+  @@index([teacher], name: "teacher_idx")
+}
+
+model teachers {
+  teacherID         Int      @id @default(autoincrement())
+  name              String?
+  age               Int?
+  canTeachSubjects  String?
+  yearsOfExperiance Int?
+  lesson            lesson[]
+}

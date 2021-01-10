@@ -1,0 +1,24 @@
+{
+   "type": "mysql",
+   "host": "localhost",
+   "port": 3306,
+   "username": "root",
+   "password": "12344321",
+   "database": "schooldb",
+   "synchronize": true,
+   "logging": false,
+   "entities": [
+      "public/entity/*.js"
+   ],
+   "migrations": [
+      "public/migration/**/*.js"
+   ],
+   "subscribers": [
+      "public/subscriber/**/*.js"
+   ],
+   "cli": {
+      "entitiesDir": "public/entity",
+      "migrationsDir": "public/migration",
+      "subscribersDir": "public/subscriber"
+   }
+}

@@ -1,4 +1,4 @@
-enum Subjects {
+export enum Subjects {
     Math,
     EnglishLanguage,
     UkrainianLanguage,
@@ -9,7 +9,7 @@ enum Subjects {
     Informatics
 }
 
-enum Groups {
+export enum Groups {
     KI11,
     KI12,
     KI13,
@@ -19,47 +19,33 @@ enum Groups {
     KI17
 }
 
-enum Day {
-    Monday,
-    Tuesday,
-    Wensday,
-    Thursday,
-    Friday,
-    Saturday,
-    Sunday
+export type StartEndTime = {
+    startTime: string;
+    endTime: string;
 }
 
-type Time = {
-    hour:number;
-    minute:number;
-}
-
-type StartEndTime = {
-    startTime: Time;
-    endTime: Time;
-}
-
-interface Teacher {
+export interface Teacher {
+    teacherID: number;
     name: string;
     age: number;
-    teacherID: number;
     canTeachSubjects: Subjects;
     yearsOfExperiance: number;
 }
 
-interface Lesson {
+export interface Lesson {
+    lessonID: number;
     subject: Subjects;
     teacher: Teacher;
     when: StartEndTime;
-    location: Classroom;
+    location?: Classroom['location'];
     url: string;
     group: Groups;
 }
 
-interface Classroom {
+export interface Classroom {
     classroomID: number;
     location: string;
     isOccupied: boolean;
-    whenIsOccupied: Lesson['when'];
+    whenIsOccupied?: Lesson['when'];
     occupiedBy: Lesson;
 }

@@ -20,6 +20,16 @@
         "no-console":"off",
         "no-shadow":"off",
         "no-use-before-define":"warn",
-        "no-multi-spaces":"off"
+        "no-multi-spaces":"off",
+        "no-multiple-empty-lines":"warn",
+        "arrow-parens":"warn",
+        "object-curly-newline":"warn",
+        "space-before-blocks":"warn",
+        "no-trailing-spaces":"warn",
+        "max-len":"warn",
+        "class-methods-use-this":"warn",
+        "no-empty-function":"warn",
+        "@typescript-eslint/no-empty-function":"warn",
+        "lines-between-class-members":"warn"
     }
 }
