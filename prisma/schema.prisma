@@ -23,7 +23,7 @@ model classroom {
 
 model lesson {
   lessonID                                   Int         @id @default(autoincrement())
-  subject                                    Int?
+  subject                                    String?
   teacher                                    Int?
   when                                       String?
   location                                   Int?

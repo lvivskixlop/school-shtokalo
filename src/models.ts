@@ -20,8 +20,8 @@ export enum Groups {
 }
 
 export type StartEndTime = {
-    startTime: string;
-    endTime: string;
+    startTime: Date;
+    endTime: Date;
 }
 
 export interface Teacher {
@@ -37,7 +37,7 @@ export interface Lesson {
     subject: Subjects;
     teacher: Teacher;
     when: StartEndTime;
-    location?: Classroom['location'];
+    location: Classroom;
     url: string;
     group: Groups;
 }
@@ -47,5 +47,5 @@ export interface Classroom {
     location: string;
     isOccupied: boolean;
     whenIsOccupied?: Lesson['when'];
-    occupiedBy: Lesson;
+    occupiedBy?: Lesson;
 }
