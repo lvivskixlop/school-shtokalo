@@ -50,7 +50,5 @@ let chemistry = {
     url: 'https://www.google.wap.dap.pip',
     group: models_1.Groups.KI15,
 };
-db_1.addClassroom(kabinetChimii);
-db_1.addTeacher(chmistryTeacher);
-db_1.addLesson(chemistry);
+console.log(db_1.readTeacher(chmistryTeacher));
 //# sourceMappingURL=main.js.map

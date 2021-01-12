@@ -1,6 +1,19 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import { addClassroom, addLesson, addTeacher } from './db';
+import { 
+    addTeacher,
+    addLesson,
+    addClassroom,
+    deleteTeacher,
+    deleteLesson,
+    deleteClassroom,
+    updateTeacher,
+    updateLesson,
+    updateClassroom,
+    readTeacher,
+    readLesson,
+    readClassroom,
+ } from './db';
 import {
     Subjects,
     Teacher,
@@ -63,6 +76,4 @@ let chemistry: Lesson = {
     group: Groups.KI15,
 };
 
-addClassroom(kabinetChimii);
-addTeacher(chmistryTeacher);
-addLesson(chemistry);
+console.log(readTeacher(chmistryTeacher));

@@ -1,11 +1,9 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import {
-  Subjects,
   Teacher,
   Classroom,
-  Groups,
   Lesson,
 } from './models';
 
@@ -108,7 +106,7 @@ addClassroom()
     await prisma.$disconnect();
   });
 
-async function removeTeacher(teacher: Teacher) {
+async function deleteTeacher(teacher: Teacher) {
   const teacherDB = await prisma.teachers.delete({
     where: {
       teacherID: teacher.teacherID,
@@ -116,7 +114,7 @@ async function removeTeacher(teacher: Teacher) {
   });
 }
 
-async function removeLesson(lesson: Lesson) {
+async function deleteLesson(lesson: Lesson) {
   const lessonDB = await prisma.lesson.delete({
     where: {
       lessonID: lesson.lessonID,
@@ -124,7 +122,7 @@ async function removeLesson(lesson: Lesson) {
   });
 }
 
-async function removeClassroom(classroom: Classroom) {
+async function deleteClassroom(classroom: Classroom) {
   const classroomDB = await prisma.classroom.delete({
     where: {
       classroomID: classroom.classroomID,
@@ -152,16 +150,92 @@ async function updateLesson(lesson:Lesson) {
       lessonID: lesson.lessonID,
     },
     data: {
-      subject: lesson.subject.toString(),
+      subject: lesson.subject,
+      teachers: {
+        update: {
+          teacherID: lesson.teacher.teacherID,
+          name: lesson.teacher.name,
+        },
+      },
+      when: `Start: ${lesson.when.startTime.toDateString()} End: ${lesson.when.endTime.toDateString()}`,
+      classroom_classroomTolesson_location: {
+        update: {
+          classroomID: lesson.location.classroomID,
+          location: lesson.location.location,
+        },
+      },
+      url: lesson.url,
+      group: lesson.group,
     },
   });
+}
+
+async function updateClassroom(classroom: Classroom) {
+  if (classroom.whenIsOccupied && classroom.occupiedBy !== undefined) {
+  const classroomDB = await prisma.classroom.update({
+    where: {
+      classroomID: classroom.classroomID,
+    },
+    data: {
+      location: classroom.location,
+      isOccupied: +!!classroom.isOccupied,
+      lesson_classroom_whenIsOccupiedTolesson: {
+        update: {
+          lessonID: classroom.occupiedBy.lessonID,
+          when: `Start: ${classroom.whenIsOccupied.startTime.toDateString()} End: ${classroom.whenIsOccupied.endTime.toDateString()}`,
+        },
+      },
+      lesson_classroom_occupiedByTolesson: {
+        update: {
+          lessonID: classroom.occupiedBy.lessonID,
+          subject: classroom.occupiedBy.subject,
+        },
+      },
+    },
+  });
+  } else {
+    throw new Error('Missing parameter occupiedBy and whenIsOccupied');
+  }
+}
+
+async function readTeacher(teacher:Teacher) {
+  const teacherDB = await prisma.teachers.findMany({
+    where: {
+      name: teacher.name,
+    },
+  });
+  return teacherDB;
+}
+
+async function readLesson(lesson:Lesson) {
+  const lessonDB = await prisma.lesson.findMany({
+    where: {
+      subject: lesson.subject,
+    },
+  });
+  return lessonDB;
+}
+
+async function readClassroom(classroom:Classroom) {
+  const classroomDB = await prisma.classroom.findMany({
+    where: {
+      location: classroom.location,
+    },
+  });
+  return classroomDB;
 }
 
 export {
   addTeacher,
   addLesson,
   addClassroom,
-  removeTeacher,
-  removeLesson,
-  removeClassroom,
+  deleteTeacher,
+  deleteLesson,
+  deleteClassroom,
+  updateTeacher,
+  updateLesson,
+  updateClassroom,
+  readTeacher,
+  readLesson,
+  readClassroom,
 };
