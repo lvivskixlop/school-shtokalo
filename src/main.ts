@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 
 const getAllMathTeachers = async () => {
     const result = await prisma.$queryRaw(`SELECT name FROM teachers WHERE canTeechSubject = ${Subjects.Math}`);
+    console.log(result);
     return result;
 };
 
@@ -22,9 +23,6 @@ const getTargetMathTeachers = async () => {
         AND classroom.occupiedBy = lesson.lessonID
         AND lesson.when LIKE '%Thu%' AND lesson.when LIKE 'Start: %8:30%%End:%%14:30%';`,
     );
+    console.log(result);
     return result;
 };
-
-console.log(getTargetMathTeachers()
-    .catch((e) => { throw e; })
-    .finally(async () => { await prisma.$disconnect(); }));
