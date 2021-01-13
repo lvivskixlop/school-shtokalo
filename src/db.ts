@@ -46,7 +46,7 @@ async function addLesson(lesson?: Lesson) {
               name: lesson.teacher.name,
             },
           },
-          when: `Start: ${lesson.when.startTime.toDateString()} End: ${lesson.when.endTime.toDateString()}`,
+          when: `Start: ${lesson.when.startTime.toString()} End: ${lesson.when.endTime.toString()}`,
           classroom_classroomTolesson_location: {
             create: {
               classroomID: lesson.location.classroomID,
@@ -81,7 +81,7 @@ async function addClassroom(classroom?: Classroom) {
             lesson_classroom_whenIsOccupiedTolesson: {
               create: {
                 lessonID: classroom.occupiedBy.lessonID,
-                when: classroom.occupiedBy.when.startTime.toDateString() + classroom.occupiedBy.when.endTime.toDateString(),
+                when: classroom.occupiedBy.when.startTime.toString() + classroom.occupiedBy.when.endTime.toString(),
               },
             },
             lesson_classroom_occupiedByTolesson: {
@@ -157,7 +157,7 @@ async function updateLesson(lesson:Lesson) {
           name: lesson.teacher.name,
         },
       },
-      when: `Start: ${lesson.when.startTime.toDateString()} End: ${lesson.when.endTime.toDateString()}`,
+      when: `Start: ${lesson.when.startTime.toString()} End: ${lesson.when.endTime.toString()}`,
       classroom_classroomTolesson_location: {
         update: {
           classroomID: lesson.location.classroomID,
@@ -182,7 +182,7 @@ async function updateClassroom(classroom: Classroom) {
       lesson_classroom_whenIsOccupiedTolesson: {
         update: {
           lessonID: classroom.occupiedBy.lessonID,
-          when: `Start: ${classroom.whenIsOccupied.startTime.toDateString()} End: ${classroom.whenIsOccupied.endTime.toDateString()}`,
+          when: `Start: ${classroom.whenIsOccupied.startTime.toString()} End: ${classroom.whenIsOccupied.endTime.toString()}`,
         },
       },
       lesson_classroom_occupiedByTolesson: {

@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-const db_1 = require("./db");
+const client_1 = require("@prisma/client");
 const models_1 = require("./models");
+const prisma = new client_1.PrismaClient();
 let chmistryTeacher = {
     teacherID: 0,
     name: 'Петро',
@@ -15,7 +16,6 @@ const blankTime = {
     startTime: new Date(0),
     endTime: new Date(1),
 };
-console.log(`Start: ${blankTime.startTime.toDateString()}  End: ${blankTime.endTime.toDateString()}`);
 let blankClassroom = {
     classroomID: 0,
     location: '',
@@ -50,5 +50,20 @@ let chemistry = {
     url: 'https://www.google.wap.dap.pip',
     group: models_1.Groups.KI15,
 };
-console.log(db_1.readTeacher(chmistryTeacher));
+const getAllMathTeachers = async () => {
+    const result = await prisma.$queryRaw(`SELECT name FROM teachers WHERE canTeachSubjects = ${models_1.Subjects.Math} AND yearsOfExperiance > 10;`);
+    return result;
+};
+const getTargetMathTeachers = async () => {
+    const result = await prisma.$queryRaw(`SELECT teachers.name FROM lesson
+        INNER JOIN teachers ON lesson.teacher=teachers.teacherID
+        INNER JOIN classroom ON lesson.location=classroom.classroomID
+        WHERE lesson.subject = 0
+        AND teachers.yearsOfExperiance > 10
+        AND classroom.location = '100'
+        AND classroom.occupiedBy = lesson.lessonID
+        AND lesson.when LIKE '%Thu%' AND lesson.when LIKE 'Start: %8:30%%End:%%14:30%';`);
+    return result;
+};
+console.log(getTargetMathTeachers());
 //# sourceMappingURL=main.js.map

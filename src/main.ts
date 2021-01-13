@@ -1,79 +1,21 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import { 
-    addTeacher,
-    addLesson,
-    addClassroom,
-    deleteTeacher,
-    deleteLesson,
-    deleteClassroom,
-    updateTeacher,
-    updateLesson,
-    updateClassroom,
-    readTeacher,
-    readLesson,
-    readClassroom,
- } from './db';
-import {
-    Subjects,
-    Teacher,
-    Classroom,
-    Groups,
-    Lesson,
-    StartEndTime,
-  } from './models';
+import { PrismaClient } from '@prisma/client';
 
-let chmistryTeacher: Teacher = {
-    teacherID: 0,
-    name: 'Петро',
-    age: 21,
-    canTeachSubjects: Subjects.Chemistry,
-    yearsOfExperiance: 1,
+const prisma = new PrismaClient();
+
+const getTargetMathTeachers = async () => {
+    const result = await prisma.$queryRaw(
+        `SELECT teachers.name FROM lesson
+        INNER JOIN teachers ON lesson.teacher=teachers.teacherID
+        INNER JOIN classroom ON lesson.location=classroom.classroomID
+        WHERE lesson.subject = 0
+        AND teachers.yearsOfExperiance > 10
+        AND classroom.location = '100'
+        AND classroom.occupiedBy = lesson.lessonID
+        AND lesson.when LIKE '%Thu%' AND lesson.when LIKE 'Start: %8:30%%End:%%14:30%';`,
+    );
+    return result;
 };
 
-const blankTime: StartEndTime = {
-    startTime: new Date(0),
-    endTime: new Date(1),
-};
-
-console.log(`Start: ${blankTime.startTime.toDateString()}  End: ${blankTime.endTime.toDateString()}`);
-
-let blankClassroom: Classroom = {
-    classroomID: 0,
-    location: '',
-    isOccupied: false,
-    whenIsOccupied: blankTime,
-};
-
-let blankLesson: Lesson = {
-    lessonID: 0,
-    subject: Subjects.Bioligy,
-    teacher: chmistryTeacher,
-    when: blankTime,
-    location: blankClassroom,
-    url: '',
-    group: Groups.KI11,
-};
-
-let kabinetChimii: Classroom = {
-    classroomID: 0,
-    location: '512 аудиторія на 5-тому поверсі',
-    isOccupied: false,
-    occupiedBy: blankLesson,
-    whenIsOccupied: blankTime,
-};
-
-let chemistry: Lesson = {
-    lessonID: 0,
-    subject: Subjects.Chemistry,
-    teacher: chmistryTeacher,
-    when: {
-        startTime: new Date(2021, 1, 14, 10, 20, 0, 0),
-        endTime: new Date(2021, 1, 14, 11, 55, 0, 0),
-    },
-    location: kabinetChimii,
-    url: 'https://www.google.wap.dap.pip',
-    group: Groups.KI15,
-};
-
-console.log(readTeacher(chmistryTeacher));
+console.log(getTargetMathTeachers());
