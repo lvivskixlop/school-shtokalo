@@ -1,7 +1,8 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import { PrismaClient } from '@prisma/client';
-import { Subjects } from './models';
+import { addTeacher } from './db';
+import { Subjects, Teacher } from './models';
 
 const prisma = new PrismaClient();
 
@@ -24,4 +25,6 @@ const getTargetMathTeachers = async () => {
     return result;
 };
 
-console.log(getTargetMathTeachers());
+console.log(getTargetMathTeachers()
+    .catch((e) => { throw e; })
+    .finally(async () => { await prisma.$disconnect(); }));

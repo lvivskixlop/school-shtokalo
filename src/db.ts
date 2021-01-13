@@ -81,7 +81,9 @@ async function addClassroom(classroom?: Classroom) {
             lesson_classroom_whenIsOccupiedTolesson: {
               create: {
                 lessonID: classroom.occupiedBy.lessonID,
-                when: classroom.occupiedBy.when.startTime.toString() + classroom.occupiedBy.when.endTime.toString(),
+                when:
+                classroom.occupiedBy.when.startTime.toString()
+                + classroom.occupiedBy.when.endTime.toString(),
               },
             },
             lesson_classroom_occupiedByTolesson: {
