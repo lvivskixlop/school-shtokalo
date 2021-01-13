@@ -1,8 +1,14 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import { PrismaClient } from '@prisma/client';
+import { Subjects } from './models';
 
 const prisma = new PrismaClient();
+
+const getAllMathTeachers = async () => {
+    const result = await prisma.$queryRaw(`SELECT name FROM teachers WHERE canTeechSubject = ${Subjects.Math}`);
+    return result;
+};
 
 const getTargetMathTeachers = async () => {
     const result = await prisma.$queryRaw(
